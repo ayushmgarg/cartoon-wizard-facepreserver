@@ -6,11 +6,11 @@
 
 **Face cartoonization that keeps you recognizable**
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](notebook/Cartoon-Wizard.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ayushmgarg/cartoon-wizard-facepreserver/blob/main/notebook/Cartoon-Wizard.ipynb)
 ![Python](https://img.shields.io/badge/python-3.8+-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-[Features](#-features) • [Demo](#-demo) • [Results](#-results) • [Installation](#-installation) • [Usage](#-usage)
+[Features](#-features) • [Demo](#-demo) • [Results](#-results) • [Installation](#-installation) 
 
 </div>
 
@@ -68,6 +68,7 @@ See how the AI preserves your identity step-by-step:
 
 ---
 
+## Installation
 ## 🚀 Start
 
 ### Option 1: Google Colab (Easiest)
@@ -76,8 +77,7 @@ Click here to run in your browser (no installation needed):
 
 1. **Click the badge below to open in Colab:**
 
-   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](notebook/Cartoon-Wizard.ipynb)
-
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ayushmgarg/cartoon-wizard-facepreserver/blob/main/notebook/Cartoon-Wizard.ipynb)
 2. **Mount your Google Drive** (Run Cell 1)
 
 3. **Upload your photo** to Colab or Drive
