@@ -6,7 +6,7 @@
 
 **Face cartoonization that keeps you recognizable**
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](notebooks/Cartoon-Wizard.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](notebook/Cartoon-Wizard.ipynb)
 ![Python](https://img.shields.io/badge/python-3.8+-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
@@ -76,7 +76,7 @@ Click here to run in your browser (no installation needed):
 
 1. **Click the badge below to open in Colab:**
 
-   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](notebooks/Cartoon-Wizard.ipynb)
+   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](notebook/Cartoon-Wizard.ipynb)
 
 2. **Mount your Google Drive** (Run Cell 1)
 
