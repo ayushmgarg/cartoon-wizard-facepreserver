@@ -6,11 +6,11 @@
 
 **Face cartoonization that keeps you recognizable**
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](notebooks/Cartoon-Wizard.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ayushmgarg/cartoon-wizard-facepreserver/blob/main/notebook/Cartoon-Wizard.ipynb)
 ![Python](https://img.shields.io/badge/python-3.8+-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-[Features](#-features) • [Demo](#-demo) • [Results](#-results) • [Installation](#-installation) • [Usage](#-usage)
+[Features](#-features) • [Demo](#-demo) • [Results](#-results) • [Installation](#-installation) 
 
 </div>
 
@@ -68,6 +68,7 @@ See how the AI preserves your identity step-by-step:
 
 ---
 
+## Installation
 ## 🚀 Start
 
 ### Option 1: Google Colab (Easiest)
@@ -76,8 +77,7 @@ Click here to run in your browser (no installation needed):
 
 1. **Click the badge below to open in Colab:**
 
-   [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ayushmgarg/cartoon-wizard-facepreserver/blob/main/Cartoon-Wizard.ipynb)
-
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ayushmgarg/cartoon-wizard-facepreserver/blob/main/notebook/Cartoon-Wizard.ipynb)
 2. **Mount your Google Drive** (Run Cell 1)
 
 3. **Upload your photo** to Colab or Drive
@@ -190,6 +190,35 @@ background_region: 100% cartoon intensity # Full simplification
 | **Oil Paint** | Van Gogh texture | Oil painting filter |
 | **Pencil Sketch** | Hand-drawn look | Grayscale, dodge & burn |
 | **Pop Art** | Andy Warhol vibrant | k=4 colors, saturation×1.4 |
+
+---
+
+---
+
+## 🌐 Interactive Web Interface
+
+**Want to try without code?** Run **Cell 18** in the notebook to launch a Gradio web interface:
+
+<table>
+
+  <tr>
+    <td><img src="Depp.png" width="400"/></td>
+    <td><img src="2smith.png" width="400"/></td>
+  </tr>
+</table>
+
+### ✨ Features
+
+- 🖱️ **Drag & Drop** - No file browsers, just drop your image
+- 🎨 **6 Style Options** - Anime, Comic, Watercolor, Oil Paint, Pencil Sketch, Pop Art
+- 📊 **Real-time Metrics** - Emotion detection & face landmarks overlay
+- ⚙️ **Adjustable Settings**:
+  - ✅ Identity Preservation (toggle on/off)
+  - 😊 Emotion Adaptive (toggle on/off)
+  - 🧠 Region Aware Processing (toggle on/off)
+  - 👁️ Face Detection Overlay (show landmarks)
+- 🔗 **Shareable Link** - Get a public URL (valid 72 hours)
+
 
 ---
 
