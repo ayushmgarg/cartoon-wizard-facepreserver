@@ -8,255 +8,150 @@
   @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap');
 
   :root {
-    --bg: #0a0a0f;
-    --card: #13131a;
-    --border: #2a2a3a;
-    --accent: #7c3aed;
-    --accent2: #06b6d4;
-    --text: #e2e8f0;
-    --muted: #64748b;
-    --success: #10b981;
-    --warning: #f59e0b;
+    --bg: #0a0a0f; --card: #13131a; --border: #2a2a3a;
+    --accent: #7c3aed; --accent2: #06b6d4;
+    --text: #e2e8f0; --muted: #64748b;
+    --success: #10b981; --warning: #f59e0b;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* ─── Noise texture overlay ─── */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 0;
-  }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; }
 
   header {
-    position: relative; z-index: 1;
-    padding: 2rem 3rem;
+    padding: 1.5rem 3rem;
     display: flex; align-items: center; justify-content: space-between;
     border-bottom: 1px solid var(--border);
   }
-
   .logo {
-    font-family: 'Space Mono', monospace;
-    font-size: 1.4rem; font-weight: 700;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    letter-spacing: -0.5px;
-  }
-
-  .tag {
-    font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--muted); font-family: 'Space Mono', monospace;
-  }
-
-  main {
-    position: relative; z-index: 1;
-    max-width: 1100px; margin: 0 auto;
-    padding: 3rem 2rem;
-  }
-
-  .hero {
-    text-align: center; margin-bottom: 3.5rem;
-  }
-
-  .hero h1 {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 600; line-height: 1.1;
-    margin-bottom: 1rem;
-  }
-
-  .hero h1 span {
+    font-family: 'Space Mono', monospace; font-size: 1.3rem; font-weight: 700;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
+  .tag { font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-family: 'Space Mono', monospace; }
 
-  .hero p {
-    color: var(--muted); font-size: 1rem;
-    max-width: 480px; margin: 0 auto; line-height: 1.7;
+  main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem; }
+
+  .hero { text-align: center; margin-bottom: 2.5rem; }
+  .hero h1 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 600; line-height: 1.1; margin-bottom: 0.8rem; }
+  .hero h1 span { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero p { color: var(--muted); font-size: 0.95rem; max-width: 460px; margin: 0 auto; line-height: 1.7; }
+
+  /* Input tabs */
+  .input-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+  .tab-btn {
+    padding: 0.5rem 1.2rem; border-radius: 8px; border: 1px solid var(--border);
+    background: transparent; color: var(--muted); font-size: 0.82rem;
+    font-family: 'Space Mono', monospace; cursor: pointer; transition: all 0.2s;
+    letter-spacing: 1px; text-transform: uppercase;
   }
+  .tab-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-  /* ─── Main canvas ─── */
-  .canvas {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
+  .canvas { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
 
-  .panel {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    position: relative;
-  }
-
+  .panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
   .panel-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--muted);
-    padding: 1rem 1.2rem 0.6rem;
-    border-bottom: 1px solid var(--border);
+    font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted);
+    padding: 0.9rem 1.2rem 0.6rem; border-bottom: 1px solid var(--border);
   }
-
   .image-area {
-    width: 100%; aspect-ratio: 1;
-    display: flex; align-items: center; justify-content: center;
-    background: #0d0d14;
-    position: relative; cursor: pointer;
+    width: 100%; aspect-ratio: 1; display: flex; align-items: center;
+    justify-content: center; background: #0d0d14; position: relative; cursor: pointer;
   }
+  .image-area img, .image-area video { width: 100%; height: 100%; object-fit: cover; display: none; }
+  .image-area video { display: none; }
 
-  .image-area img {
-    width: 100%; height: 100%; object-fit: cover;
-    display: none;
-  }
-
-  .upload-hint {
-    text-align: center; color: var(--muted);
-    pointer-events: none;
-  }
-
-  .upload-hint svg { margin-bottom: 0.75rem; opacity: 0.4; }
+  .upload-hint { text-align: center; color: var(--muted); pointer-events: none; }
+  .upload-hint svg { margin-bottom: 0.75rem; opacity: 0.4; display: block; margin-left: auto; margin-right: auto; }
   .upload-hint p { font-size: 0.85rem; }
   .upload-hint span { font-size: 0.75rem; color: var(--accent); }
 
-  .spinner {
-    display: none;
-    position: absolute; inset: 0;
-    background: rgba(10,10,15,0.85);
-    align-items: center; justify-content: center;
-    flex-direction: column; gap: 1rem;
-    z-index: 10;
+  /* Camera UI */
+  .camera-controls {
+    display: none; position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+    z-index: 20;
   }
+  .camera-controls.visible { display: flex; gap: 0.75rem; }
+  .cam-btn {
+    padding: 0.55rem 1.2rem; border-radius: 50px; border: none;
+    font-size: 0.8rem; font-family: 'Space Mono', monospace;
+    cursor: pointer; font-weight: 700; letter-spacing: 1px;
+  }
+  .cam-capture { background: #fff; color: #000; }
+  .cam-stop { background: #ef4444; color: #fff; }
 
+  .spinner {
+    display: none; position: absolute; inset: 0;
+    background: rgba(10,10,15,0.85);
+    align-items: center; justify-content: center; flex-direction: column; gap: 1rem; z-index: 10;
+  }
   .spinner.active { display: flex; }
-
   .spin-ring {
-    width: 48px; height: 48px;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
+    width: 48px; height: 48px; border: 3px solid var(--border);
+    border-top-color: var(--accent); border-radius: 50%;
     animation: spin 0.8s linear infinite;
   }
-
   @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner p { font-size: 0.8rem; color: var(--muted); font-family: 'Space Mono', monospace; }
 
-  .spinner p {
-    font-size: 0.8rem; color: var(--muted);
-    font-family: 'Space Mono', monospace;
-  }
-
-  /* ─── Controls ─── */
+  /* Controls bar */
   .controls {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 1.5rem;
-    display: flex; align-items: center;
-    gap: 1.5rem; flex-wrap: wrap;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 1.2rem 1.5rem;
+    display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
   }
 
-  .toggle-wrap {
-    display: flex; align-items: center; gap: 0.75rem;
-    cursor: pointer; user-select: none;
+  /* Style dropdown */
+  .style-select-wrap { display: flex; flex-direction: column; gap: 0.3rem; }
+  .style-label { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-family: 'Space Mono', monospace; }
+  select#styleSelect {
+    background: #1a1a24; border: 1px solid var(--border); color: var(--text);
+    padding: 0.5rem 1rem; border-radius: 8px; font-size: 0.85rem;
+    font-family: 'Inter', sans-serif; cursor: pointer; outline: none;
+    min-width: 160px;
   }
+  select#styleSelect:focus { border-color: var(--accent); }
 
+  /* Toggle */
+  .toggle-wrap { display: flex; align-items: center; gap: 0.75rem; cursor: pointer; user-select: none; }
   .toggle-wrap input { display: none; }
-
-  .toggle-track {
-    width: 44px; height: 24px;
-    background: var(--border);
-    border-radius: 12px;
-    position: relative; transition: background 0.2s;
-  }
-
-  .toggle-track::after {
-    content: ''; position: absolute;
-    width: 18px; height: 18px; border-radius: 50%;
-    background: #fff; top: 3px; left: 3px;
-    transition: transform 0.2s;
-  }
-
+  .toggle-track { width: 44px; height: 24px; background: var(--border); border-radius: 12px; position: relative; transition: background 0.2s; }
+  .toggle-track::after { content: ''; position: absolute; width: 18px; height: 18px; border-radius: 50%; background: #fff; top: 3px; left: 3px; transition: transform 0.2s; }
   input:checked + .toggle-track { background: var(--accent); }
   input:checked + .toggle-track::after { transform: translateX(20px); }
-
   .toggle-label { font-size: 0.85rem; color: var(--text); }
   .toggle-sublabel { font-size: 0.7rem; color: var(--muted); }
 
   .btn-process {
-    margin-left: auto;
-    background: linear-gradient(135deg, var(--accent), #6d28d9);
-    color: #fff; border: none;
-    padding: 0.75rem 2rem;
-    border-radius: 10px;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.85rem; font-weight: 700;
-    letter-spacing: 1px; text-transform: uppercase;
-    cursor: pointer;
+    margin-left: auto; background: linear-gradient(135deg, var(--accent), #6d28d9);
+    color: #fff; border: none; padding: 0.75rem 2rem; border-radius: 10px;
+    font-family: 'Space Mono', monospace; font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
     transition: opacity 0.2s, transform 0.1s;
   }
-
   .btn-process:hover { opacity: 0.9; transform: translateY(-1px); }
   .btn-process:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
-  /* ─── Metrics bar ─── */
-  .metrics {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 1rem; margin-top: 1.5rem;
-    opacity: 0; transition: opacity 0.4s;
-  }
-
+  /* Metrics */
+  .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; opacity: 0; transition: opacity 0.4s; }
   .metrics.visible { opacity: 1; }
+  .metric-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem 1.3rem; }
+  .metric-title { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-family: 'Space Mono', monospace; margin-bottom: 0.4rem; }
+  .metric-value { font-size: 1.6rem; font-weight: 600; font-family: 'Space Mono', monospace; line-height: 1; }
+  .metric-value.good { color: var(--success); }
+  .metric-value.warn { color: var(--warning); }
+  .metric-value.info { color: var(--accent2); }
+  .metric-sub { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; }
 
-  .metric-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 12px; padding: 1.1rem 1.3rem;
-  }
-
-  .metric-title {
-    font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--muted); font-family: 'Space Mono', monospace;
-    margin-bottom: 0.4rem;
-  }
-
-  .metric-value {
-    font-size: 1.6rem; font-weight: 600;
-    font-family: 'Space Mono', monospace;
-    line-height: 1;
-  }
-
-  .metric-value.good  { color: var(--success); }
-  .metric-value.warn  { color: var(--warning); }
-  .metric-value.info  { color: var(--accent2); }
-
-  .metric-sub {
-    font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem;
-  }
-
-  /* ─── Hidden file input ─── */
   #fileInput { display: none; }
 
-  /* ─── Footer ─── */
-  footer {
-    position: relative; z-index: 1;
-    text-align: center; padding: 2rem;
-    color: var(--muted); font-size: 0.75rem;
-    border-top: 1px solid var(--border);
-  }
+  footer { text-align: center; padding: 2rem; color: var(--muted); font-size: 0.75rem; border-top: 1px solid var(--border); margin-top: 2rem; }
 
   @media (max-width: 640px) {
     .canvas { grid-template-columns: 1fr; }
     .metrics { grid-template-columns: 1fr; }
     header { padding: 1.2rem; }
     .btn-process { width: 100%; }
+    .controls { flex-direction: column; align-items: stretch; }
   }
 </style>
 </head>
@@ -264,40 +159,49 @@
 
 <header>
   <div class="logo">◈ Cartoon Wizard</div>
-  <div class="tag">IVP Project · MPSTME</div>
+  <div class="tag">IVP · MPSTME</div>
 </header>
 
 <main>
   <div class="hero">
     <h1>Identity-Preserving<br><span>Image Cartoonization</span></h1>
-    <p>Upload a portrait. The system detects your emotion, preserves your facial identity, and renders a cartoon — without losing who you are.</p>
+    <p>Upload a photo or use your camera. The system detects your emotion, preserves your identity, and renders a cartoon.</p>
+  </div>
+
+  <!-- Input mode tabs -->
+  <div class="input-tabs">
+    <button class="tab-btn active" id="tabUpload" onclick="switchTab('upload')">📁 Upload</button>
+    <button class="tab-btn" id="tabCamera" onclick="switchTab('camera')">📷 Camera</button>
   </div>
 
   <div class="canvas">
     <!-- Input panel -->
     <div class="panel">
       <div class="panel-label">Input — Original</div>
-      <div class="image-area" id="dropZone" onclick="document.getElementById('fileInput').click()">
+      <div class="image-area" id="dropZone">
         <div class="upload-hint" id="uploadHint">
           <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
           </svg>
           <p>Click or drag an image here</p>
           <span>JPG, PNG — face photos work best</span>
         </div>
         <img id="inputPreview" alt="Input">
+        <video id="cameraFeed" autoplay playsinline muted></video>
+        <div class="camera-controls" id="cameraControls">
+          <button class="cam-btn cam-capture" onclick="capturePhoto()">⬤ Capture</button>
+          <button class="cam-btn cam-stop" onclick="stopCamera()">✕ Stop</button>
+        </div>
       </div>
     </div>
 
     <!-- Output panel -->
     <div class="panel">
       <div class="panel-label">Output — Cartoonized</div>
-      <div class="image-area" id="outputArea">
+      <div class="image-area">
         <div class="upload-hint" id="outputHint">
           <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-              d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
           </svg>
           <p>Result will appear here</p>
           <span>Process an image to see output</span>
@@ -313,12 +217,25 @@
 
   <!-- Controls -->
   <div class="controls">
+    <div class="style-select-wrap">
+      <div class="style-label">Cartoon Style</div>
+      <select id="styleSelect">
+        <option value="default">🎨 Default (Identity-Preserving)</option>
+        <option value="anime">🌸 Anime</option>
+        <option value="comic">💥 Comic</option>
+        <option value="watercolor">🎨 Watercolor</option>
+        <option value="oil_paint">🖌️ Oil Paint</option>
+        <option value="pencil_sketch">✏️ Pencil Sketch</option>
+        <option value="pop_art">🟡 Pop Art</option>
+      </select>
+    </div>
+
     <label class="toggle-wrap">
       <input type="checkbox" id="overlayToggle">
       <div class="toggle-track"></div>
       <div>
         <div class="toggle-label">Detection Overlay</div>
-        <div class="toggle-sublabel">Face box · Emotion score · Identity score</div>
+        <div class="toggle-sublabel">Face box · Emotion · Identity score</div>
       </div>
     </label>
 
@@ -333,7 +250,7 @@
       <div class="metric-sub" id="mEmotionConf">confidence: —</div>
     </div>
     <div class="metric-card">
-      <div class="metric-title">Identity Preserved</div>
+      <div class="metric-title">Identity Score</div>
       <div class="metric-value good" id="mIdentity">—</div>
       <div class="metric-sub" id="mFaceDetected">face: —</div>
     </div>
@@ -345,11 +262,10 @@
   </div>
 </main>
 
-<footer>
-  Cartoon Wizard · Image & Video Processing · Sem 5 · MPSTME Mumbai
-</footer>
+<footer>Cartoon Wizard · Image & Video Processing · Sem 5 · MPSTME Mumbai</footer>
 
 <input type="file" id="fileInput" accept="image/*">
+<canvas id="captureCanvas" style="display:none"></canvas>
 
 <script>
   const fileInput     = document.getElementById('fileInput');
@@ -362,24 +278,81 @@
   const overlayToggle = document.getElementById('overlayToggle');
   const metricsBar    = document.getElementById('metricsBar');
   const dropZone      = document.getElementById('dropZone');
+  const cameraFeed    = document.getElementById('cameraFeed');
+  const cameraControls = document.getElementById('cameraControls');
+  const captureCanvas = document.getElementById('captureCanvas');
+  const styleSelect   = document.getElementById('styleSelect');
 
   let currentImageB64 = null;
+  let currentMode     = 'upload';
+  let cameraStream    = null;
 
-  // ── File selection ──
-  fileInput.addEventListener('change', e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    loadFile(file);
-  });
+  // ── Tab switching ──
+  function switchTab(mode) {
+    currentMode = mode;
+    document.getElementById('tabUpload').classList.toggle('active', mode === 'upload');
+    document.getElementById('tabCamera').classList.toggle('active', mode === 'camera');
 
-  // ── Drag and drop ──
-  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.border = '2px dashed #7c3aed'; });
-  dropZone.addEventListener('dragleave', () => { dropZone.style.border = ''; });
+    if (mode === 'upload') {
+      stopCamera();
+      dropZone.onclick = () => fileInput.click();
+    } else {
+      dropZone.onclick = null;
+      startCamera();
+    }
+  }
+
+  // ── Camera ──
+  async function startCamera() {
+    try {
+      cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+      cameraFeed.srcObject = cameraStream;
+      cameraFeed.style.display = 'block';
+      inputPreview.style.display = 'none';
+      uploadHint.style.display = 'none';
+      cameraControls.classList.add('visible');
+    } catch (e) {
+      alert('Camera access denied or not available. Please use the Upload tab.');
+      switchTab('upload');
+    }
+  }
+
+  function stopCamera() {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(t => t.stop());
+      cameraStream = null;
+    }
+    cameraFeed.style.display = 'none';
+    cameraControls.classList.remove('visible');
+    if (!currentImageB64) uploadHint.style.display = 'flex';
+  }
+
+  function capturePhoto() {
+    if (!cameraStream) return;
+    const w = cameraFeed.videoWidth;
+    const h = cameraFeed.videoHeight;
+    captureCanvas.width  = w;
+    captureCanvas.height = h;
+    captureCanvas.getContext('2d').drawImage(cameraFeed, 0, 0, w, h);
+    currentImageB64 = captureCanvas.toDataURL('image/jpeg', 0.9);
+
+    inputPreview.src = currentImageB64;
+    inputPreview.style.display = 'block';
+    stopCamera();
+    processBtn.disabled = false;
+    resetOutput();
+  }
+
+  // ── Upload ──
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.outline = '2px dashed #7c3aed'; });
+  dropZone.addEventListener('dragleave', () => { dropZone.style.outline = ''; });
   dropZone.addEventListener('drop', e => {
-    e.preventDefault(); dropZone.style.border = '';
+    e.preventDefault(); dropZone.style.outline = '';
     const file = e.dataTransfer.files[0];
     if (file && file.type.startsWith('image/')) loadFile(file);
   });
+  dropZone.onclick = () => { if (currentMode === 'upload') fileInput.click(); };
+  fileInput.addEventListener('change', e => { if (e.target.files[0]) loadFile(e.target.files[0]); });
 
   function loadFile(file) {
     const reader = new FileReader();
@@ -389,19 +362,20 @@
       inputPreview.style.display = 'block';
       uploadHint.style.display = 'none';
       processBtn.disabled = false;
-
-      // Reset output
-      outputPreview.style.display = 'none';
-      outputHint.style.display = 'flex';
-      metricsBar.classList.remove('visible');
+      resetOutput();
     };
     reader.readAsDataURL(file);
+  }
+
+  function resetOutput() {
+    outputPreview.style.display = 'none';
+    outputHint.style.display = 'flex';
+    metricsBar.classList.remove('visible');
   }
 
   // ── Process ──
   processBtn.addEventListener('click', async () => {
     if (!currentImageB64) return;
-
     processBtn.disabled = true;
     spinner.classList.add('active');
     outputHint.style.display = 'none';
@@ -411,27 +385,27 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          image: currentImageB64,
-          show_overlay: overlayToggle.checked
+          image:        currentImageB64,
+          show_overlay: overlayToggle.checked,
+          style:        styleSelect.value
         })
       });
 
+      if (!response.ok) throw new Error(`Server error: ${response.status}`);
       const data = await response.json();
 
       if (data.success) {
         outputPreview.src = data.result_image;
         outputPreview.style.display = 'block';
+        outputHint.style.display = 'none';
 
-        // Fill metrics
-        document.getElementById('mEmotion').textContent        = data.emotion || '—';
-        document.getElementById('mEmotionConf').textContent    = `confidence: ${data.emotion_confidence}%`;
-        document.getElementById('mIdentity').textContent       = data.identity_score.toFixed(2);
-        document.getElementById('mFaceDetected').textContent   = `face detected: ${data.face_detected ? 'yes' : 'no'}`;
-        document.getElementById('mStatus').textContent         = data.face_detected ? 'PRESERVED' : 'NO FACE';
-        document.getElementById('mStatusSub').textContent      = data.face_detected
-          ? 'identity maintained' : 'upload a face photo';
+        document.getElementById('mEmotion').textContent      = data.emotion || '—';
+        document.getElementById('mEmotionConf').textContent  = `confidence: ${data.emotion_confidence}%`;
+        document.getElementById('mIdentity').textContent     = data.identity_score > 0 ? data.identity_score.toFixed(2) : 'N/A';
+        document.getElementById('mFaceDetected').textContent = `face detected: ${data.face_detected ? 'yes' : 'no'}`;
+        document.getElementById('mStatus').textContent       = data.face_detected ? 'PRESERVED' : 'NO FACE';
+        document.getElementById('mStatusSub').textContent    = data.face_detected ? 'identity maintained' : 'upload a face photo';
 
-        // Color identity score
         const idEl = document.getElementById('mIdentity');
         idEl.className = 'metric-value ' + (data.identity_score >= 0.7 ? 'good' : data.identity_score >= 0.5 ? 'warn' : 'info');
 
@@ -440,9 +414,8 @@
         alert('Processing failed: ' + data.error);
         outputHint.style.display = 'flex';
       }
-
     } catch (err) {
-      alert('Network error: ' + err.message);
+      alert('Error: ' + err.message);
       outputHint.style.display = 'flex';
     } finally {
       processBtn.disabled = false;
@@ -450,11 +423,8 @@
     }
   });
 
-  // ── Re-process on overlay toggle if result already shown ──
   overlayToggle.addEventListener('change', () => {
-    if (outputPreview.style.display === 'block') {
-      processBtn.click();
-    }
+    if (outputPreview.style.display === 'block') processBtn.click();
   });
 </script>
 </body>
