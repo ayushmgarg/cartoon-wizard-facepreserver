@@ -424,8 +424,10 @@
   });
 
   overlayToggle.addEventListener('change', () => {
-    if (outputPreview.style.display === 'block') processBtn.click();
-  });
+    if (currentImageB64 && outputPreview.style.display === 'block') {
+        processBtn.dispatchEvent(new Event('click'));
+    }
+});
 </script>
 </body>
 </html>
