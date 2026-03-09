@@ -9,6 +9,10 @@ from cartoon_engine import enhanced_pipeline, emotion_detector, advanced_viz, mu
 
 app = Flask(__name__)
 
+@app.route('/health')
+def health():
+    return 'ok', 200
+
 def decode_image(b64_string):
     if ',' in b64_string:
         b64_string = b64_string.split(',')[1]
