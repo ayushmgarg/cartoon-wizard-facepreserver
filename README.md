@@ -71,7 +71,19 @@ See how the AI preserves your identity step-by-step:
 ## Installation
 ## 🚀 Start
 
-### Option 1: Google Colab (Easiest)
+### Option 1: Live Web App (No Setup Required)
+
+The project is deployed as a full Flask web application on Render:
+
+**🌐 [cartoon-wizard.onrender.com](https://cartoon-wizard.onrender.com)**
+
+- Upload any face photo directly in the browser
+- Toggle the detection overlay to show face bounding box, emotion label, and identity score
+- No account, no installation, works on any device
+
+> **Note:** The free-tier server sleeps after 15 minutes of inactivity. If the page takes ~30 seconds to load on first visit, that is normal — it is waking up.
+
+### Option 2: Google Colab (Easiest for Full Pipeline)
 
 Click here to run in your browser (no installation needed):
 
@@ -86,9 +98,8 @@ Click here to run in your browser (no installation needed):
 
 5. **Process your image** (Jump to Cell 29 for quick demo)
 
-### For Local Installation
+### Option 3: Run Locally
 
-⚠️ **Note:** Local installation requires manually extracting classes from the notebook.
 ```bash
 # Clone repository
 git clone https://github.com/ayushmgarg/cartoon-wizard-facepreserver.git
@@ -97,14 +108,38 @@ cd cartoon-wizard-facepreserver
 # Install dependencies
 pip install -r requirements.txt
 
-# Open notebook
-jupyter notebook Cartoonization.ipynb
+# Run the Flask web app
+python app.py
 ```
+
+Then open `http://localhost:5000` in your browser.
 
 **Requirements:**
 - Python 3.8+
 - CUDA-capable GPU (recommended)
 - 8GB RAM minimum
+
+### Option 4: Deploy Your Own Instance on Render
+
+The repo is structured for one-click Render deployment:
+
+```
+cartoon-wizard-facepreserver/
+├── app.py                  ← Flask backend
+├── cartoon_engine.py       ← Full pipeline (all classes)
+├── requirements.txt        ← Pinned dependencies
+└── templates/
+    └── index.html          ← Frontend web interface
+```
+
+1. Fork this repository
+2. Go to [render.com](https://render.com) → **New Web Service** → connect your fork
+3. Set the following:
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `gunicorn app:app --workers 1 --timeout 120`
+   - **Instance Type:** Free
+4. Click **Deploy** — live in ~15 minutes
+
 ---
 
 ## 🔬 How It Works
@@ -161,6 +196,8 @@ background_region: 100% cartoon intensity # Full simplification
 | **Face Landmarks** | MediaPipe Face Mesh | 468-point detection |
 | **Image Processing** | OpenCV | Bilateral filter, edges, quantization |
 | **Metrics** | scikit-image | SSIM, PSNR evaluation |
+| **Web Backend** | Flask + Gunicorn | REST API serving the pipeline |
+| **Deployment** | Render | Cloud hosting |
 
 ---
 
@@ -197,7 +234,7 @@ background_region: 100% cartoon intensity # Full simplification
 
 ## 🌐 Interactive Web Interface
 
-**Want to try without code?** Run **Cell 18** in the notebook to launch a Gradio web interface:
+The project ships with a custom Flask web interface (replacing the earlier Gradio prototype):
 
 <table>
 
@@ -210,15 +247,10 @@ background_region: 100% cartoon intensity # Full simplification
 ### ✨ Features
 
 - 🖱️ **Drag & Drop** - No file browsers, just drop your image
-- 🎨 **6 Style Options** - Anime, Comic, Watercolor, Oil Paint, Pencil Sketch, Pop Art
-- 📊 **Real-time Metrics** - Emotion detection & face landmarks overlay
-- ⚙️ **Adjustable Settings**:
-  - ✅ Identity Preservation (toggle on/off)
-  - 😊 Emotion Adaptive (toggle on/off)
-  - 🧠 Region Aware Processing (toggle on/off)
-  - 👁️ Face Detection Overlay (show landmarks)
-- 🔗 **Shareable Link** - Get a public URL (valid 72 hours)
-
+- 🎨 **Emotion Detection** - Live emotion label and confidence score
+- 📊 **Identity Score** - Facenet512 similarity displayed after processing
+- 👁️ **Detection Overlay Toggle** - Show or hide face bounding box, emotion score, and identity score with one click
+- 🌐 **Permanently Deployed** - Accessible at any time via the Render URL
 
 ---
 

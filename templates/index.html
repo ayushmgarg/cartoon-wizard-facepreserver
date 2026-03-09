@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartoon Wizard</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --card: #13131a;
+    --border: #2a2a3a;
+    --accent: #7c3aed;
+    --accent2: #06b6d4;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --success: #10b981;
+    --warning: #f59e0b;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── Noise texture overlay ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0;
+  }
+
+  header {
+    position: relative; z-index: 1;
+    padding: 2rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.4rem; font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+
+  .tag {
+    font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); font-family: 'Space Mono', monospace;
+  }
+
+  main {
+    position: relative; z-index: 1;
+    max-width: 1100px; margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+
+  .hero {
+    text-align: center; margin-bottom: 3.5rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 600; line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .hero p {
+    color: var(--muted); font-size: 1rem;
+    max-width: 480px; margin: 0 auto; line-height: 1.7;
+  }
+
+  /* ─── Main canvas ─── */
+  .canvas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .panel-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted);
+    padding: 1rem 1.2rem 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .image-area {
+    width: 100%; aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+    background: #0d0d14;
+    position: relative; cursor: pointer;
+  }
+
+  .image-area img {
+    width: 100%; height: 100%; object-fit: cover;
+    display: none;
+  }
+
+  .upload-hint {
+    text-align: center; color: var(--muted);
+    pointer-events: none;
+  }
+
+  .upload-hint svg { margin-bottom: 0.75rem; opacity: 0.4; }
+  .upload-hint p { font-size: 0.85rem; }
+  .upload-hint span { font-size: 0.75rem; color: var(--accent); }
+
+  .spinner {
+    display: none;
+    position: absolute; inset: 0;
+    background: rgba(10,10,15,0.85);
+    align-items: center; justify-content: center;
+    flex-direction: column; gap: 1rem;
+    z-index: 10;
+  }
+
+  .spinner.active { display: flex; }
+
+  .spin-ring {
+    width: 48px; height: 48px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .spinner p {
+    font-size: 0.8rem; color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* ─── Controls ─── */
+  .controls {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex; align-items: center;
+    gap: 1.5rem; flex-wrap: wrap;
+  }
+
+  .toggle-wrap {
+    display: flex; align-items: center; gap: 0.75rem;
+    cursor: pointer; user-select: none;
+  }
+
+  .toggle-wrap input { display: none; }
+
+  .toggle-track {
+    width: 44px; height: 24px;
+    background: var(--border);
+    border-radius: 12px;
+    position: relative; transition: background 0.2s;
+  }
+
+  .toggle-track::after {
+    content: ''; position: absolute;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: #fff; top: 3px; left: 3px;
+    transition: transform 0.2s;
+  }
+
+  input:checked + .toggle-track { background: var(--accent); }
+  input:checked + .toggle-track::after { transform: translateX(20px); }
+
+  .toggle-label { font-size: 0.85rem; color: var(--text); }
+  .toggle-sublabel { font-size: 0.7rem; color: var(--muted); }
+
+  .btn-process {
+    margin-left: auto;
+    background: linear-gradient(135deg, var(--accent), #6d28d9);
+    color: #fff; border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+
+  .btn-process:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-process:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* ─── Metrics bar ─── */
+  .metrics {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1rem; margin-top: 1.5rem;
+    opacity: 0; transition: opacity 0.4s;
+  }
+
+  .metrics.visible { opacity: 1; }
+
+  .metric-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.1rem 1.3rem;
+  }
+
+  .metric-title {
+    font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); font-family: 'Space Mono', monospace;
+    margin-bottom: 0.4rem;
+  }
+
+  .metric-value {
+    font-size: 1.6rem; font-weight: 600;
+    font-family: 'Space Mono', monospace;
+    line-height: 1;
+  }
+
+  .metric-value.good  { color: var(--success); }
+  .metric-value.warn  { color: var(--warning); }
+  .metric-value.info  { color: var(--accent2); }
+
+  .metric-sub {
+    font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem;
+  }
+
+  /* ─── Hidden file input ─── */
+  #fileInput { display: none; }
+
+  /* ─── Footer ─── */
+  footer {
+    position: relative; z-index: 1;
+    text-align: center; padding: 2rem;
+    color: var(--muted); font-size: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 640px) {
+    .canvas { grid-template-columns: 1fr; }
+    .metrics { grid-template-columns: 1fr; }
+    header { padding: 1.2rem; }
+    .btn-process { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">◈ Cartoon Wizard</div>
+  <div class="tag">IVP Project · MPSTME</div>
+</header>
+
+<main>
+  <div class="hero">
+    <h1>Identity-Preserving<br><span>Image Cartoonization</span></h1>
+    <p>Upload a portrait. The system detects your emotion, preserves your facial identity, and renders a cartoon — without losing who you are.</p>
+  </div>
+
+  <div class="canvas">
+    <!-- Input panel -->
+    <div class="panel">
+      <div class="panel-label">Input — Original</div>
+      <div class="image-area" id="dropZone" onclick="document.getElementById('fileInput').click()">
+        <div class="upload-hint" id="uploadHint">
+          <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+          </svg>
+          <p>Click or drag an image here</p>
+          <span>JPG, PNG — face photos work best</span>
+        </div>
+        <img id="inputPreview" alt="Input">
+      </div>
+    </div>
+
+    <!-- Output panel -->
+    <div class="panel">
+      <div class="panel-label">Output — Cartoonized</div>
+      <div class="image-area" id="outputArea">
+        <div class="upload-hint" id="outputHint">
+          <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+          <p>Result will appear here</p>
+          <span>Process an image to see output</span>
+        </div>
+        <img id="outputPreview" alt="Output">
+        <div class="spinner" id="spinner">
+          <div class="spin-ring"></div>
+          <p>Processing…</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <label class="toggle-wrap">
+      <input type="checkbox" id="overlayToggle">
+      <div class="toggle-track"></div>
+      <div>
+        <div class="toggle-label">Detection Overlay</div>
+        <div class="toggle-sublabel">Face box · Emotion score · Identity score</div>
+      </div>
+    </label>
+
+    <button class="btn-process" id="processBtn" disabled>Process →</button>
+  </div>
+
+  <!-- Metrics -->
+  <div class="metrics" id="metricsBar">
+    <div class="metric-card">
+      <div class="metric-title">Detected Emotion</div>
+      <div class="metric-value info" id="mEmotion">—</div>
+      <div class="metric-sub" id="mEmotionConf">confidence: —</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-title">Identity Preserved</div>
+      <div class="metric-value good" id="mIdentity">—</div>
+      <div class="metric-sub" id="mFaceDetected">face: —</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-title">Status</div>
+      <div class="metric-value good" id="mStatus">—</div>
+      <div class="metric-sub" id="mStatusSub">—</div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  Cartoon Wizard · Image & Video Processing · Sem 5 · MPSTME Mumbai
+</footer>
+
+<input type="file" id="fileInput" accept="image/*">
+
+<script>
+  const fileInput     = document.getElementById('fileInput');
+  const inputPreview  = document.getElementById('inputPreview');
+  const outputPreview = document.getElementById('outputPreview');
+  const uploadHint    = document.getElementById('uploadHint');
+  const outputHint    = document.getElementById('outputHint');
+  const processBtn    = document.getElementById('processBtn');
+  const spinner       = document.getElementById('spinner');
+  const overlayToggle = document.getElementById('overlayToggle');
+  const metricsBar    = document.getElementById('metricsBar');
+  const dropZone      = document.getElementById('dropZone');
+
+  let currentImageB64 = null;
+
+  // ── File selection ──
+  fileInput.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    loadFile(file);
+  });
+
+  // ── Drag and drop ──
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.border = '2px dashed #7c3aed'; });
+  dropZone.addEventListener('dragleave', () => { dropZone.style.border = ''; });
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault(); dropZone.style.border = '';
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) loadFile(file);
+  });
+
+  function loadFile(file) {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      currentImageB64 = ev.target.result;
+      inputPreview.src = currentImageB64;
+      inputPreview.style.display = 'block';
+      uploadHint.style.display = 'none';
+      processBtn.disabled = false;
+
+      // Reset output
+      outputPreview.style.display = 'none';
+      outputHint.style.display = 'flex';
+      metricsBar.classList.remove('visible');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ── Process ──
+  processBtn.addEventListener('click', async () => {
+    if (!currentImageB64) return;
+
+    processBtn.disabled = true;
+    spinner.classList.add('active');
+    outputHint.style.display = 'none';
+
+    try {
+      const response = await fetch('/cartoonize', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          image: currentImageB64,
+          show_overlay: overlayToggle.checked
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        outputPreview.src = data.result_image;
+        outputPreview.style.display = 'block';
+
+        // Fill metrics
+        document.getElementById('mEmotion').textContent        = data.emotion || '—';
+        document.getElementById('mEmotionConf').textContent    = `confidence: ${data.emotion_confidence}%`;
+        document.getElementById('mIdentity').textContent       = data.identity_score.toFixed(2);
+        document.getElementById('mFaceDetected').textContent   = `face detected: ${data.face_detected ? 'yes' : 'no'}`;
+        document.getElementById('mStatus').textContent         = data.face_detected ? 'PRESERVED' : 'NO FACE';
+        document.getElementById('mStatusSub').textContent      = data.face_detected
+          ? 'identity maintained' : 'upload a face photo';
+
+        // Color identity score
+        const idEl = document.getElementById('mIdentity');
+        idEl.className = 'metric-value ' + (data.identity_score >= 0.7 ? 'good' : data.identity_score >= 0.5 ? 'warn' : 'info');
+
+        metricsBar.classList.add('visible');
+      } else {
+        alert('Processing failed: ' + data.error);
+        outputHint.style.display = 'flex';
+      }
+
+    } catch (err) {
+      alert('Network error: ' + err.message);
+      outputHint.style.display = 'flex';
+    } finally {
+      processBtn.disabled = false;
+      spinner.classList.remove('active');
+    }
+  });
+
+  // ── Re-process on overlay toggle if result already shown ──
+  overlayToggle.addEventListener('change', () => {
+    if (outputPreview.style.display === 'block') {
+      processBtn.click();
+    }
+  });
+</script>
+</body>
+</html>
